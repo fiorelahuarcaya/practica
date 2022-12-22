@@ -5,8 +5,8 @@ let sql;
 
 sql = `CREATE TABLE IF NOT EXISTS user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name VARCHAR(100) NOT NULL,
-  lastName VARCHAR(100) NOT NULL
+  email VARCHAR(100) NOT NULL,
+  password VARCHAR(100) NOT NULL
 );
 `
 db.run(sql);
@@ -18,3 +18,5 @@ sql = `CREATE TABLE IF NOT EXISTS post (
   idAutor TEXT NOT NULL
 );`
 db.run(sql);
+
+db.close()

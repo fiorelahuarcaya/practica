@@ -3,8 +3,8 @@ const app = express();
 const port = 80;
 import path from "path";
 const router = express.Router();
-import {routesPost} from "./routes-posts";
-import {routesUser} from "./routes-user";
+import {routesPost} from "./routes/routes-posts";
+import {routesUser} from "./routes/routes-user";
 
 app.use(express.json()); // to support JSON-encoded bodies
 
@@ -34,7 +34,7 @@ router.post("/api", async function (req, res) {
 });
 
 router.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname + "/index.html"));
+  res.sendFile(path.join(__dirname + "./index.html"));
   //__dirname : It will resolve to your project folder.
 });
 

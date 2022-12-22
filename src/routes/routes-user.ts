@@ -1,6 +1,8 @@
 import express from "express";
 export const routesUser = express.Router();
 import { Database } from "sqlite3";
+
+
 const db = new Database("database.db");
 
 routesUser.get("/", (req, res) => {
@@ -40,3 +42,4 @@ routesUser.delete("/:id", async function (req, res) {
     else res.send({ message: `User deleted` });
   });
 });
+
