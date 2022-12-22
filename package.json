@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsx server.ts",
-    "db": "node sql.js",
+    "db": "tsx sql.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "init": "tsc --init"
   },
