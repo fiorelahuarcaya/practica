@@ -1,12 +1,14 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 const saltRounds = 10;
 
-export function createHash(word:string){
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hash = bcrypt.hashSync(word, salt);
-    return hash;
+export async function createHash(word: string) {
+  const hash = await bcrypt.hash(word, saltRounds);
+  console.log(hash);
+  return hash;
 }
 
-export function compareHash(word:string, hash:string){
-    return bcrypt.compareSync(word, hash);
+export async function compareHash(word: string, hash: string) {
+    const result = await bcrypt.compare(word, hash);
+    return result;
 }
+

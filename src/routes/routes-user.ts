@@ -1,8 +1,6 @@
 import express from "express";
 export const routesUser = express.Router();
 import { Database } from "sqlite3";
-import bcrypt from "bcrypt";
-
 import {createHash} from "../crypt";
 
 const db = new Database("database.db");
@@ -12,9 +10,16 @@ routesUser.get("/", (req, res) => {
   db.all(sql, (_, query) => res.send(query));
 });
 
-routesUser.post("/", (req, res) => {
+routesUser.get("/:id", (req, res) => {
+  let id = req.params.id;
+  let sql = `SELECT * FROM user WHERE id=?`;
+  db.all(sql,[id],(_, query) => res.send(query));
+});
+
+
+routesUser.post("/", async (req, res) => {
   const { email, password } = req.body;
-  let hash = createHash(password);
+  let hash = await createHash(password);
 
   let sql = `INSERT INTO user (email, password) VALUES (?,?)`;
   db.run(sql, [email, hash], (err) => {
@@ -23,11 +28,11 @@ routesUser.post("/", (req, res) => {
   });
 });
 
-routesUser.put("/:id", (req, res) => {
+routesUser.put("/:id", async (req, res) => {
   let id = req.params.id;
   const { email, password } = req.body;
 
-  let hash = createHash(password);
+  let hash = await createHash(password);
 
   const statement = db.prepare(
     `UPDATE user SET email=? , password=? WHERE id=?`
