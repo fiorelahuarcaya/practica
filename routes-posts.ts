@@ -16,7 +16,7 @@ routesPost.get("/", (req, res) => {
     let sql = `INSERT INTO post (title, body,idAutor) VALUES (?,?,?)`;
     db.run(sql, [title, body,idAutor], (err) => {
       if (err) res.send(err.message);
-      else res.send({ message: `Post Guardado` });
+      else res.send({ message: `Post saved` });
     });
   });
   
@@ -30,7 +30,7 @@ routesPost.get("/", (req, res) => {
   
     statement.run([title, body,idAutor, id], (err) => {
       if (err) res.send(err.message);
-      else res.send({ message: `Post Actualizado` });
+      else res.send({ message: `Post updated` });
     });
   });
   
@@ -40,7 +40,7 @@ routesPost.get("/", (req, res) => {
     const delete_statement = db.prepare(`DELETE FROM post WHERE id=?`);
     delete_statement.run([id], (err) => {
       if (err) res.send(err.message);
-      else res.send({ message: `Post Eliminado` });
+      else res.send({ message: `Post deleted` });
     });
   });
   

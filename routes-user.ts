@@ -14,7 +14,7 @@ routesUser.post("/", (req, res) => {
   let sql = `INSERT INTO user (name, lastName) VALUES (?,?)`;
   db.run(sql, [name, lastName], (err) => {
     if (err) res.send(err.message);
-    else res.send({ message: `Usuario Guardado` });
+    else res.send({ message: `User saved` });
   });
 });
 
@@ -27,7 +27,7 @@ routesUser.put("/:id", (req, res) => {
 
   statement.run([name, lastName, id], (err) => {
     if (err) res.send(err.message);
-    else res.send({ message: `Usuario Actualizado` });
+    else res.send({ message: `User updated` });
   });
 });
 
@@ -37,6 +37,6 @@ routesUser.delete("/:id", async function (req, res) {
   const delete_statement = db.prepare(`DELETE FROM user WHERE id=?`);
   delete_statement.run([id], (err) => {
     if (err) res.send(err.message);
-    else res.send({ message: `Usuario Eliminado` });
+    else res.send({ message: `User deleted` });
   });
 });
