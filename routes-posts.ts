@@ -2,7 +2,7 @@ import express from "express";
 
 export const routesPost = express.Router();
 import { Database } from "sqlite3";
-const db = new Database("test.db");
+const db = new Database("database.db");
 
 
 routesPost.get("/", (req, res) => {
