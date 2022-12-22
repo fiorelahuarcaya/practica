@@ -1,7 +1,9 @@
 import express from "express";
 export const routesUser = express.Router();
 import { Database } from "sqlite3";
+import bcrypt from "bcrypt";
 
+import {createHash} from "../crypt";
 
 const db = new Database("database.db");
 
@@ -11,10 +13,11 @@ routesUser.get("/", (req, res) => {
 });
 
 routesUser.post("/", (req, res) => {
-  const { name, lastName } = req.body;
+  const { email, password } = req.body;
+  let hash = createHash(password);
 
-  let sql = `INSERT INTO user (name, lastName) VALUES (?,?)`;
-  db.run(sql, [name, lastName], (err) => {
+  let sql = `INSERT INTO user (email, password) VALUES (?,?)`;
+  db.run(sql, [email, hash], (err) => {
     if (err) res.send(err.message);
     else res.send({ message: `User saved` });
   });
@@ -22,12 +25,15 @@ routesUser.post("/", (req, res) => {
 
 routesUser.put("/:id", (req, res) => {
   let id = req.params.id;
-  const { name, lastName } = req.body;
+  const { email, password } = req.body;
+
+  let hash = createHash(password);
+
   const statement = db.prepare(
-    `UPDATE user SET name=? , lastname=? WHERE id=?`
+    `UPDATE user SET email=? , password=? WHERE id=?`
   );
 
-  statement.run([name, lastName, id], (err) => {
+  statement.run([email, hash, id], (err) => {
     if (err) res.send(err.message);
     else res.send({ message: `User updated` });
   });
