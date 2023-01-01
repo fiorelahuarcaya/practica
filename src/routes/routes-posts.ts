@@ -1,12 +1,24 @@
 import express from "express";
+import "dotenv/config";
+import jwt from "jsonwebtoken";
 
 export const routesPost = express.Router();
 import { Database } from "sqlite3";
 const db = new Database("database.db");
 
-routesPost.get("/", (req, res) => {
-  let sql = `SELECT * FROM post`;
-  db.all(sql, (_, query) => res.send(query));
+
+
+
+routesPost.get("/", verifyToken ,(req, res) => {
+  
+  jwt.verify(String(req.headers.authorization), String(process.env.SECRET_KEY),(err: any, token: any) => {
+    if(err){
+      res.sendStatus(403);
+    }else{
+      let sql = `SELECT * FROM post`;
+      db.all(sql, (_, query) => res.send(query));
+    }
+  }) 
 });
 
 routesPost.get("/:id", (req, res) => {
@@ -49,3 +61,16 @@ routesPost.delete("/:id", async function (req, res) {
     else res.send({ message: `Post deleted` });
   });
 });
+
+//Authorization: Bearer <token>
+function verifyToken(req: any, res: any, next: any){
+  const bearerHeader = req.headers['authorization'];
+
+  if(typeof bearerHeader != 'undefined'){
+    const bearerToken = bearerHeader.split(" ")[1];
+    req.headers.authorization = bearerToken;
+    next();
+  }else{
+    res.sendStatus(403);
+  }
+}
